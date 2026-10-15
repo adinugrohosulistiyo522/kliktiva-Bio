@@ -1,25 +1,19 @@
-KLIKTIVA — CLOUDFLARE WORKER DEPLOYMENT PACKAGE v1
+KLIKTIVA — CLOUDFLARE WORKER DEPLOYMENT PACKAGE v2
 
-Purpose
-This package combines the product files from the user-designated Kliktiva baseline ZIP with the Cloudflare Worker deployment configuration. The baseline product files are preserved; Cloudflare-specific entry/configuration files are added for deployment.
+Fixes included in this package:
+- Both public and admin frontend call /api (not Netlify's /.netlify/functions/api).
+- Worker explicitly serves /index.html at / and /admin.html at /admin or /admin/ without redirects.
+- Wrangler Worker name matches the existing Cloudflare Worker project: kliktiva-bio.
+- Product frontend files are preserved from the designated Kliktiva baseline package.
 
-IMPORTANT
-- This package has NOT been live-verified on the user's Cloudflare account. Test it as a new project first.
-- Do not delete or overwrite the existing live website/deployment until the new deployment passes tests.
-- Do not commit secrets or tokens. Configure APPS_SCRIPT_URL in Cloudflare Worker runtime variables/secrets.
-- Keep this GitHub repository private.
+Browser-only deployment:
+1. Download and extract this ZIP.
+2. Upload the CONTENTS to the ROOT of the GitHub repository connected to the intended Cloudflare Worker. Do not upload the ZIP itself or place everything inside a nested folder.
+3. Replace the repository files with these package files, keeping the repository private.
+4. Confirm the Cloudflare runtime variable APPS_SCRIPT_URL contains the existing Apps Script Web App URL ending in /exec. Do not paste secrets into GitHub.
+5. Deploy the repository's main branch.
+6. Test /, /admin, and POST /api. Keep any previous deployment available until all tests pass.
 
-GitHub upload
-1. Create/open the intended PRIVATE repository.
-2. Upload the CONTENTS of this ZIP to the repository root (not the ZIP itself and not inside a nested folder).
-3. Confirm `wrangler.jsonc`, `src/index.js`, `public/index.html`, and `public/admin.html` are at the paths shown.
-4. Connect the repository to a NEW Cloudflare Worker deployment.
-5. Configure APPS_SCRIPT_URL with the existing valid Apps Script Web App /exec URL.
-6. Verify build success and test /, /admin, /admin/, and API before attaching the production domain.
-
-Routing intent
-- / and static paths are served from public assets.
-- /admin and /admin/ are served internally from public/admin.html without HTTP redirect.
-- /api and /api/* are handled by src/index.js and forwarded to Apps Script.
-
-This package is a deployment candidate, not a claim that deployment or account configuration has already been verified.
+Important:
+- This package has been checked for the known frontend API path mismatch and root routing issue, but cannot be live-tested against the user's Cloudflare account or Apps Script backend from this environment.
+- If / and /admin load but data still fails, inspect the JSON error from POST /api; that will identify whether APPS_SCRIPT_URL or the Apps Script Web App response needs attention.

@@ -47,7 +47,14 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === '/api' || url.pathname.startsWith('/api/')) return handleApi(request, env);
 
-    // Serve /admin as admin.html internally, never with an HTTP redirect.
+    // Explicitly serve index.html at / because HTML handling is configured as none.
+    if (url.pathname === '/' || url.pathname === '') {
+      const target = new URL('/index.html', url.origin);
+      target.search = url.search;
+      return env.ASSETS.fetch(new Request(target, request));
+    }
+
+    // Serve /admin as admin.html internally; never send an HTTP redirect.
     if (url.pathname === '/admin' || url.pathname === '/admin/') {
       const target = new URL('/admin.html', url.origin);
       target.search = url.search;
