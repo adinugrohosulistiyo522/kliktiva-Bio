@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kliktiva-bio-affiliate-cloudflare-pilot",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-15",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/api",
+      "/api/*",
+      "/admin",
+      "/admin/"
+    ],
+    "html_handling": "none",
+    "not_found_handling": "404-page"
+  }
+}

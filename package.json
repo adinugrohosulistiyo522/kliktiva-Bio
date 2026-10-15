@@ -1,0 +1,6 @@
+{
+  "name": "kliktiva-bio-affiliate-cloudflare-worker",
+  "version": "3.4.2-cloudflare-fixed-pilot",
+  "private": true,
+  "type": "module"
+}
